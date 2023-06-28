@@ -53,11 +53,20 @@ const Application = () => {
 	};
 
 	const getComputerMove = (matchesRemaining: number) => {
-		if (matchesRemaining % 4 !== 0) {
-			return Math.min(matchesRemaining % 4, matchesRemaining);
+		if (matchesRemaining === 2) {
+			if (userMatches % 2 === 0) {
+				return 1;
+			} else {
+				return 2;
+			}
+		}
+
+		const remainingMod4 = matchesRemaining % 4;
+
+		if (remainingMod4 === 0) {
+			return 3; // Take 3 matches to make the remaining divisible by 4
 		} else {
-			const randomMove = Math.floor(Math.random() * 3) + 1;
-			return Math.min(randomMove, matchesRemaining);
+			return Math.min(remainingMod4, matchesRemaining); // Take the remaining matches to make it divisible by 4
 		}
 	};
 
@@ -113,7 +122,9 @@ const Application = () => {
 					<div>{userMatches % 2 === 0 ? "You won!" : "Computer won :("}</div>
 				)} */}
 
-				<p>🧑 You vs Computer 🖥️</p>
+				<p>
+					🧑 You vs <span>Computer</span> 🖥️
+				</p>
 				<p>Matches left: {matchesTotal}</p>
 				<p>Your matches: {userMatches}</p>
 				{!wasStarted && <Button onClick={updateWasStarted}>Start</Button>}

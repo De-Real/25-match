@@ -2,6 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import MUIModal from "@mui/material/Modal";
 import Button from "./button";
+import { StyledModal } from "./styles/modal.styled";
 
 const style = {
 	position: "absolute" as "absolute",
@@ -10,9 +11,9 @@ const style = {
 	transform: "translate(-50%, -50%)",
 	width: 400,
 	bgcolor: "background.paper",
-	border: "2px solid #000",
 	boxShadow: 24,
 	p: 4,
+	borderRadius: 5,
 };
 
 type ModalProps = {
@@ -32,15 +33,18 @@ const Modal = ({ open, handleOpen, handleClose, userWon }: ModalProps) => {
 				aria-describedby="modal-modal-description"
 			>
 				<Box sx={style}>
-					<h2>
-						{userWon
-							? "You won! Congratulations!"
-							: "You was defeated by computer :("}
-					</h2>
-					<Button onClick={(event) => handleClose(event, true)}>
-						Play again
-					</Button>
-					<Button onClick={handleClose}>Close</Button>
+					<StyledModal>
+						<h2>
+							{userWon
+								? "You won! Congratulations!"
+								: "You was defeated by computer :("}
+						</h2>
+
+						<Button onClick={(event) => handleClose(event, true)}>
+							Play again
+						</Button>
+						<Button onClick={handleClose}>Close</Button>
+					</StyledModal>
 				</Box>
 			</MUIModal>
 		</div>

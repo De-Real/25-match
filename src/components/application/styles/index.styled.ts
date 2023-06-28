@@ -9,7 +9,23 @@ export const StyledApplication = styled.div`
 	flex-direction: column;
 	align-items: center;
 	gap: 10px;
-	max-width: 700px;
+	width: 700px;
+
+	@media (max-width: 768px) {
+		width: 620px;
+	}
+
+	@media (max-width: 678px) {
+		width: 520px;
+	}
+
+	@media (max-width: 578px) {
+		width: 420px;
+	}
+
+	@media (max-width: 478px) {
+		width: 310px;
+	}
 
 	& .arrangement {
 		border: 1px solid rgb(211, 211, 211);
@@ -20,6 +36,11 @@ export const StyledApplication = styled.div`
 
 	& p {
 		font-size: 24px;
+		@media (max-width: 478px) {
+			& span {
+				display: none;
+			}
+		}
 	}
 `;
 
