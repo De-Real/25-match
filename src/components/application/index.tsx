@@ -103,7 +103,7 @@ const Application = () => {
 				userWon={userMatches % 2 === 0}
 			/>
 			<StyledApplication>
-				<h1>25 Matches Game</h1>
+				<h1>Match Pile Game</h1>
 
 				{!wasStarted && (
 					<StyledArrangement>

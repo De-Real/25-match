@@ -6,7 +6,7 @@ export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<Head>
-				<title>25 Matches game</title>
+				<title>Match Pile Game</title>
 			</Head>
 			<Component {...pageProps} />
 		</>
