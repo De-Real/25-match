@@ -1,38 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Match Pile Game
 
-First, run the development server:
+It's a Stormotion | Internship JS Test Task
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Technologies stack: Next.js(React), TypeScript and styled-components.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Running
 
-## Learn More
+In the project directory, you can run:
 
-To learn more about Next.js, take a look at the following resources:
+### `npm start`
+## Game description
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Welcome to the "Match Pile Game"! This is a strategic game where two players take turns removing matches from a pile. The goal is to be the player who takes the last match from the pile, but with a twist. The game is played with a pile of 2n + 1 matches, where n is a parameter chosen by the players. Each player can take 1 to m matches on their turn, with m being another adjustable parameter. The game requires both careful planning and adaptability to outsmart your opponent and secure a win.
+## Game logic
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Welcome to the "Match Pile Game"! This is a strategic game where two players take turns removing matches from a pile. The goal is to be the player who takes the last match from the pile, but with a twist. The game is played with a pile of 2n + 1 matches, where n is a parameter chosen by the players. Each player can take 1 to m matches on their turn, with m being another adjustable parameter. The game requires both careful planning and adaptability to outsmart your opponent and secure a win.
 
-## Deploy on Vercel
+The AI opponent utilizes an optimal strategy to determine its moves. It takes into account the number of matches remaining and the user's previous move. In the early stages of the game, the AI may choose its moves randomly. However, as the game progresses, the AI becomes more strategic. It ensures that it takes the appropriate number of matches to maintain a winning position whenever possible. It also adjusts its strategy based on the values of n and m chosen by the players.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+By employing smart tactics and thinking ahead, you can challenge the AI opponent and aim to claim victory in this exciting Match Pile Game!
+## Author
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [@De-Real](https://github.com/De-Real)
+
