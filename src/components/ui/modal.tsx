@@ -43,7 +43,6 @@ const Modal = ({ open, handleClose, userWon }: ModalProps) => {
 						<Button onClick={(event) => handleClose(event, true)}>
 							Play again
 						</Button>
-						<Button onClick={handleClose}>Close</Button>
 					</StyledModal>
 				</Box>
 			</MUIModal>

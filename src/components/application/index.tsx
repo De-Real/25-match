@@ -25,6 +25,7 @@ const Application = () => {
 	const [isUserTurn, setIsUserTurn] = useState(true);
 	const [wasStarted, setWasStarted] = useState(false);
 	const [mValue, setMValue] = useState("3");
+	const [nValue, setNValue] = useState("25");
 
 	const firstTurnRef = useRef<HTMLInputElement | null>(null);
 	const nInputRef = useRef<HTMLInputElement | null>(null);
@@ -42,6 +43,7 @@ const Application = () => {
 		setIsUserTurn(!firstTurnRef.current?.checked);
 		arrangeMatchesTotal(evaluateMatches(nInputRef.current?.value || "12"));
 		setMValue(mInputRef.current?.value || "3");
+		setNValue(nInputRef.current?.value || "25");
 		setWasStarted(true);
 	};
 
@@ -55,10 +57,12 @@ const Application = () => {
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			if (wasStarted && !isUserTurn) {
-				makeComputerTurn(getComputerMove(matchesTotal, userMatches, +mValue));
+				makeComputerTurn(
+					getComputerMove(matchesTotal, userMatches, +nValue, +mValue)
+				);
 				setIsUserTurn(true);
 			}
-		}, 3000);
+		}, 1500);
 
 		return () => clearTimeout(timeout);
 	}, [
@@ -68,6 +72,7 @@ const Application = () => {
 		matchesTotal,
 		userMatches,
 		mValue,
+		nValue,
 	]);
 
 	useEffect(() => {
