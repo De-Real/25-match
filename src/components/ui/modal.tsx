@@ -23,7 +23,7 @@ type ModalProps = {
 	handleClose: (event: React.SyntheticEvent, reset?: boolean) => void;
 };
 
-const Modal = ({ open, handleOpen, handleClose, userWon }: ModalProps) => {
+const Modal = ({ open, handleClose, userWon }: ModalProps) => {
 	return (
 		<div>
 			<MUIModal
@@ -51,4 +51,4 @@ const Modal = ({ open, handleOpen, handleClose, userWon }: ModalProps) => {
 	);
 };
 
-export default Modal;
+export default React.memo(Modal);

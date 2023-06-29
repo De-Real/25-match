@@ -1,17 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { StyledAppControl, StyledApplication } from "./styles/index.styled";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+	StyledAppControl,
+	StyledApplication,
+	StyledArrangement,
+} from "./styles/index.styled";
 import Button from "../ui/button";
 import useMatchesTotal from "@/hooks/use-matches-total";
 import Modal from "../ui/modal";
+import { useModal } from "@/hooks/use-modal";
+import { getComputerMove } from "@/utils/get-computer-move";
+import { isButtonDisabled } from "@/utils/is-button-disabled";
+import Input from "../ui/input";
+import { evaluateMatches } from "@/utils/evaluate-matches";
+import { createButtonsArray } from "@/utils/create-buttons-array";
 
 const Application = () => {
-	const [matchesTotal, updateMatchesTotal, clearMatchesTotal] =
-		useMatchesTotal(25);
+	const {
+		matchesTotal,
+		updateMatchesTotal,
+		clearMatchesTotal,
+		arrangeMatchesTotal,
+	} = useMatchesTotal(25);
 	const [userMatches, setUserMatches] = useState(0);
 	const [isUserTurn, setIsUserTurn] = useState(true);
-	const [shouldComputerStart, setShouldComputerStart] = useState(false);
 	const [wasStarted, setWasStarted] = useState(false);
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [mValue, setMValue] = useState("3");
+
+	const firstTurnRef = useRef<HTMLInputElement | null>(null);
+	const nInputRef = useRef<HTMLInputElement | null>(null);
+	const mInputRef = useRef<HTMLInputElement | null>(null);
 
 	const restartGame = () => {
 		setWasStarted(false);
@@ -19,82 +36,58 @@ const Application = () => {
 		setUserMatches(0);
 	};
 
-	const openModal = () => {
-		setIsModalOpen(true);
-	};
-
-	const closeModal = (event: React.SyntheticEvent, reset: boolean = false) => {
-		setIsModalOpen(false);
-		if (reset) {
-			restartGame();
-		}
-	};
-
-	const updateShouldComputerStart = (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
-		setShouldComputerStart(e.target.checked);
-		setIsUserTurn(!e.target.checked);
-	};
+	const { isModalOpen, openModal, closeModal } = useModal(restartGame);
 
 	const updateWasStarted = () => {
+		setIsUserTurn(!firstTurnRef.current?.checked);
+		arrangeMatchesTotal(evaluateMatches(nInputRef.current?.value || "12"));
+		setMValue(mInputRef.current?.value || "3");
 		setWasStarted(true);
 	};
 
-	const switchTurn = (value: number) => {
-		setIsUserTurn(false);
-		setUserMatches((curState) => curState + value);
-		updateMatchesTotal(value);
-	};
-
-	const makeComputerTurn = (value: number) => {
-		// setComputerMatches((curState) => curState + value);
-		updateMatchesTotal(value);
-	};
-
-	const getComputerMove = (matchesRemaining: number) => {
-		if (matchesRemaining === 2) {
-			if (userMatches % 2 === 0) {
-				return 1;
-			} else {
-				return 2;
-			}
-		}
-
-		const remainingMod4 = matchesRemaining % 4;
-
-		if (remainingMod4 === 0) {
-			return 3; // Take 3 matches to make the remaining divisible by 4
-		} else {
-			return Math.min(remainingMod4, matchesRemaining); // Take the remaining matches to make it divisible by 4
-		}
-	};
+	const makeComputerTurn = useCallback(
+		(value: number) => {
+			updateMatchesTotal(value);
+		},
+		[updateMatchesTotal]
+	);
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			if (wasStarted && !isUserTurn) {
-				makeComputerTurn(getComputerMove(matchesTotal));
+				makeComputerTurn(getComputerMove(matchesTotal, userMatches, +mValue));
 				setIsUserTurn(true);
 			}
 		}, 3000);
 
 		return () => clearTimeout(timeout);
-	}, [wasStarted, isUserTurn]);
+	}, [
+		wasStarted,
+		isUserTurn,
+		makeComputerTurn,
+		matchesTotal,
+		userMatches,
+		mValue,
+	]);
 
 	useEffect(() => {
 		if (matchesTotal === 0) {
-			setIsModalOpen(true);
+			openModal();
 		}
-	}, [matchesTotal, userMatches]);
+	}, [matchesTotal]);
 
-	const isButtonDisabled = (
-		total: number,
-		btnNumber: number,
-		isUserTurn: boolean
-	) => {
-		if (!isUserTurn) return true;
-		if (total < btnNumber) return true;
-	};
+	const bindedSwitch = useCallback(
+		(value: number) => {
+			const switchTurn = (value: number) => {
+				setIsUserTurn(false);
+				setUserMatches((curState) => curState + value);
+				updateMatchesTotal(value);
+			};
+
+			return switchTurn.bind(null, value);
+		},
+		[updateMatchesTotal]
+	);
 
 	return (
 		<>
@@ -108,20 +101,12 @@ const Application = () => {
 				<h1>25 Matches Game</h1>
 
 				{!wasStarted && (
-					<div className="arrangement">
-						<input
-							type="checkbox"
-							onChange={updateShouldComputerStart}
-							checked={shouldComputerStart}
-						/>
-						<label>Computer starts</label>
-					</div>
+					<StyledArrangement>
+						<Input ref={firstTurnRef} type="checkbox" label="Computer starts" />
+						<Input ref={nInputRef} label="Enter n-value:" defaultValue="12" />
+						<Input ref={mInputRef} label="Enter m-value:" defaultValue="3" />
+					</StyledArrangement>
 				)}
-
-				{/* {matchesTotal === 0 && (
-					<div>{userMatches % 2 === 0 ? "You won!" : "Computer won :("}</div>
-				)} */}
-
 				<p>
 					🧑 You vs <span>Computer</span> 🖥️
 				</p>
@@ -135,24 +120,15 @@ const Application = () => {
 							{!isUserTurn && <p>Computer&apos;s turn...</p>}
 
 							<p>Take matches</p>
-							<Button
-								onClick={switchTurn.bind(null, 1)}
-								disabled={isButtonDisabled(matchesTotal, 1, isUserTurn)}
-							>
-								1
-							</Button>
-							<Button
-								onClick={switchTurn.bind(null, 2)}
-								disabled={isButtonDisabled(matchesTotal, 2, isUserTurn)}
-							>
-								2
-							</Button>
-							<Button
-								onClick={switchTurn.bind(null, 3)}
-								disabled={isButtonDisabled(matchesTotal, 2, isUserTurn)}
-							>
-								3
-							</Button>
+							{createButtonsArray(+mValue).map((element) => (
+								<Button
+									key={element}
+									onClick={bindedSwitch(element)}
+									disabled={isButtonDisabled(matchesTotal, element, isUserTurn)}
+								>
+									{element}
+								</Button>
+							))}
 						</StyledAppControl>
 						<Button onClick={restartGame}>Play again</Button>
 					</>

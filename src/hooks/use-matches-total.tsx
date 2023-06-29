@@ -14,7 +14,16 @@ const useMatchesTotal = (initial?: number) => {
 		setMatchesTotal(initial || 25);
 	};
 
-	return [matchesTotal, updateMatchesTotal, clearMatchesTotal] as const;
+	const arrangeMatchesTotal = (value: number) => {
+		setMatchesTotal(value || 25);
+	};
+
+	return {
+		matchesTotal,
+		updateMatchesTotal,
+		clearMatchesTotal,
+		arrangeMatchesTotal,
+	};
 };
 
 export default useMatchesTotal;

@@ -27,13 +27,6 @@ export const StyledApplication = styled.div`
 		width: 310px;
 	}
 
-	& .arrangement {
-		border: 1px solid rgb(211, 211, 211);
-		width: 100%;
-		padding: 20px 15px;
-		margin-bottom: 40px;
-	}
-
 	& p {
 		font-size: 24px;
 		@media (max-width: 478px) {
@@ -42,6 +35,13 @@ export const StyledApplication = styled.div`
 			}
 		}
 	}
+`;
+
+export const StyledArrangement = styled.div`
+	border: 1px solid rgb(211, 211, 211);
+	width: 100%;
+	padding: 20px 15px;
+	margin-bottom: 40px;
 `;
 
 export const StyledAppControl = styled.div`

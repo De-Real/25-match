@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { StyledButton } from "./styles/button.styled";
 
 type ButtonProps = React.ComponentPropsWithoutRef<"button">;
@@ -11,4 +11,4 @@ const Button = ({ onClick, disabled, children }: ButtonProps) => {
 	);
 };
 
-export default Button;
+export default memo(Button);
